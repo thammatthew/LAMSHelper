@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+      <div class="row">
+        <div class="col s12">
+          <span class="title">TBLHelper <span class="version">v1.2</span></span>
+        </div>
+        <div class="col s6">
+          <table>
+            <thead>
+              <tr>
+                  <th>Check</th>
+                  <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Detected Page Type</td>
+                <td id="pageTypeCheckValue"></td>
+              </tr>
+              <tr>
+                <td>Number of Questions</td>
+                <td id="questionCountValue"></td>
+              </tr>
+              <tr>
+                <td>Number of Specific Burning Questions</td>
+                <td id="sbqCountValue"></td>
+              </tr>
+              <tr>
+                <td>Number of General Burning Questions</td>
+                <td id="gbqCountValue"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col s6">
+          <form>
+            <p>
+              <label>
+                <input id="displayCorrectAnsCheckbox" name="displayCorrectAns" type="checkbox" class="filled-in checkbox-purple" />
+                <span>Display correct answers</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input id="displayTeamAnsCheckbox" name="displayTeamAns" type="checkbox" class="filled-in checkbox-purple" />
+                <span>Display all team answers</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input id="displaySBQCheckbox" name="displaySBQ" type="checkbox" class="filled-in checkbox-purple" checked="checked" />
+                <span>Display specific burning questions</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input id="displayGBQCheckbox" name="displayGBQ" type="checkbox" class="filled-in checkbox-purple" checked="checked" />
+                <span>Display general burning questions</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input id="displayBQLikesCheckbox" name="displayBQLikes" type="checkbox" class="filled-in checkbox-purple"/>
+                <span>Display like count for burning questions</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input id="displayBQTeamCheckbox" name="displayBQTeam" type="checkbox" class="filled-in checkbox-purple"/>
+                <span>Display team attribution for burning questions</span>
+              </label>
+            </p>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s6">
+          <a id="scanPageBtn" class="waves-effect waves-light btn purple darken-4"><i class="material-icons left">search</i>Scan Page</a>
+        </div>
+        <div class="col s6">
+          <button id="applyFormatBtn" class="btn waves-effect waves-light purple darken-4" type="submit" name="action">Apply
+            <i class="material-icons left">format_paint</i>
+          </button>
+          <a id="resetPageBtn" class="waves-effect waves-light btn purple darken-4"><i class="material-icons left">restart_alt</i>Reset Page</a>
+        </div>
+      </div>
+    <script src="popup.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+  </body>
+</html>
