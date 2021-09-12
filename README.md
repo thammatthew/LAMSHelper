@@ -15,7 +15,7 @@ Supports parsing of data from the following page types:
 ## Download
 
 1. Click the most recent version under 'Releases' on the right of this page
-2. Download the attached zip file
+2. Download the zip file labelled 'TBLHelper_vX.X.zip'
 
 ## Installation
 
