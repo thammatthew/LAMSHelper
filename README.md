@@ -33,7 +33,7 @@ Supports parsing of data from the following page types:
 
 6. In the popup that appears, find the extension named TBL Helper and hit the pin icon
 
-   ![Installation2](D:\Everything\School\4 - Uni (NTU LKCMed)\M1\Co-Curricular\Acad Comm\TBL Tools\TBLHelper Extension\TBLHelper Tutorial\Installation2.png)
+   ![Installation2](https://github.com/thammatthew/TBLHelper/blob/main/readme_images/Installation2.png)
 
 ## Instructions
 
@@ -43,7 +43,7 @@ Supports parsing of data from the following page types:
 
 2. Press the 'SCAN PAGE' button on the bottom left of the popup to parse the page. Information retrieved from the page should now be displayed in the table on the left
 
-   ![Instructions2](D:\Everything\School\4 - Uni (NTU LKCMed)\M1\Co-Curricular\Acad Comm\TBL Tools\TBLHelper Extension\TBLHelper Tutorial\Instructions2.png)
+   ![Instructions2](https://github.com/thammatthew/TBLHelper/blob/main/readme_images/Instructions2.png)
 
 3. If required, change the export format by ticking/unticking the checkboxes on the right. Recommended settings for TBL transcription are as follows:
 
@@ -71,7 +71,7 @@ Supports parsing of data from the following page types:
 
    3. Press the 'SAVE' button on the bottom of the popup
 
-      ![Instructions4](D:\Everything\School\4 - Uni (NTU LKCMed)\M1\Co-Curricular\Acad Comm\TBL Tools\TBLHelper Extension\TBLHelper Tutorial\Instructions4.png)
+      ![Instructions4](https://github.com/thammatthew/TBLHelper/blob/main/readme_images/Instructions4.png)
 
    4. Open the saved PDF in Microsoft Word, and save it as a .DOCX
 
