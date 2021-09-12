@@ -97,7 +97,11 @@ function scanPage() {
     questionCount = traQuestions.length;
     bqCount = document.getElementsByClassName("jqgrow ui-row-ltr").length;
     gbqContainer = document.getElementById("burningQuestions0");
-    gbqCount = gbqContainer.getElementsByClassName("jqgrow ui-row-ltr").length;
+    if (gbqContainer != null) {
+      gbqCount = gbqContainer.getElementsByClassName("jqgrow ui-row-ltr").length;
+    } else {
+      gbqCount = 0;
+    }
     sbqCount = bqCount-gbqCount;
 
   } else if (title == 'Assessment' && aeCheck == true) {
@@ -417,6 +421,21 @@ function applyFormat() {
         mcqcontainer = document.getElementById(mcqcontainer_id);
         mcqcontainer.appendChild(mcqdiv);
         mcqtable_array[i].remove();
+      }
+
+      // Remove rationales
+      var init_rationale_array = Array.prototype.slice.call(document.getElementsByClassName('question-type'));
+      var rationale_array = [];
+
+      for (let i = 0; i < init_rationale_array.length; i++) {
+        if (init_rationale_array[i].innerText == "Rationale") {
+          rationale_array.push(init_rationale_array[i]);
+        }
+      }
+
+      for (let i = 0; i < rationale_array.length; i++) {
+        rationale_array[i].nextElementSibling.remove();
+        rationale_array[i].remove();
       }
 
     } else {
