@@ -8,7 +8,7 @@
   <body>
       <div class="row">
         <div class="col s12">
-          <span class="title">TBLHelper <span class="version">v1.3</span></span>
+          <span class="title">TBLHelper <span class="version">v1.4</span></span>
         </div>
         <div class="col s6">
           <table>
@@ -28,11 +28,11 @@
                 <td id="questionCountValue"></td>
               </tr>
               <tr>
-                <td>Number of Specific Burning Questions</td>
+                <td>Number of Specific BQs</td>
                 <td id="sbqCountValue"></td>
               </tr>
               <tr>
-                <td>Number of General Burning Questions</td>
+                <td>Number of General BQs</td>
                 <td id="gbqCountValue"></td>
               </tr>
             </tbody>
@@ -42,7 +42,7 @@
           <form>
             <p>
               <label>
-                <input id="displayCorrectAnsCheckbox" name="displayCorrectAns" type="checkbox" class="filled-in checkbox-purple" />
+                <input id="displayCorrectAnsCheckbox" name="displayCorrectAns" type="checkbox" class="filled-in checkbox-purple" checked="checked" />
                 <span>Display correct answers</span>
               </label>
             </p>
@@ -55,25 +55,31 @@
             <p>
               <label>
                 <input id="displaySBQCheckbox" name="displaySBQ" type="checkbox" class="filled-in checkbox-purple" checked="checked" />
-                <span>Display specific burning questions</span>
+                <span>Display specific BQs</span>
               </label>
             </p>
             <p>
               <label>
                 <input id="displayGBQCheckbox" name="displayGBQ" type="checkbox" class="filled-in checkbox-purple" checked="checked" />
-                <span>Display general burning questions</span>
+                <span>Display general BQs</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input id="appendTemplateCheckbox" name="appendTemplate" type="checkbox" class="filled-in checkbox-purple" checked="checked" />
+                <span>Append template for transcription</span>
               </label>
             </p>
             <p>
               <label>
                 <input id="displayBQLikesCheckbox" name="displayBQLikes" type="checkbox" class="filled-in checkbox-purple"/>
-                <span>Display like count for burning questions</span>
+                <span>Display like count for BQs</span>
               </label>
             </p>
             <p>
               <label>
                 <input id="displayBQTeamCheckbox" name="displayBQTeam" type="checkbox" class="filled-in checkbox-purple"/>
-                <span>Display team attribution for burning questions</span>
+                <span>Display team attribution for BQs</span>
               </label>
             </p>
           </form>

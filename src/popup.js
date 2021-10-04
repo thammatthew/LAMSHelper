@@ -28,7 +28,8 @@ applyFormatBtn.addEventListener('click', async() => {
       document.getElementById('displaySBQCheckbox').checked,
       document.getElementById('displayGBQCheckbox').checked,
       document.getElementById('displayBQLikesCheckbox').checked,
-      document.getElementById('displayBQTeamCheckbox').checked
+      document.getElementById('displayBQTeamCheckbox').checked,
+      document.getElementById('appendTemplateCheckbox').checked
     ];
   
     chrome.storage.local.set({options: options}, function() {
@@ -134,6 +135,16 @@ function applyFormat() {
     let options = response.options
     // Change page header
     document.getElementsByClassName('panel-title panel-learner-title')[0].innerHTML = pageType;
+
+    var templateHTML = `
+                <br>
+                <span>Team Ans:</span>
+                <ul><li></li></ul>
+                <br>
+                <span>CE Ans:</span>
+                <ul><li></li></ul>
+              `;
+
     if (pageType == 'iRA/tRA') {
       // If "Display correct answers" is ticked
       // Define the main question container
@@ -248,10 +259,16 @@ function applyFormat() {
           container.appendChild(header);
 
           for (let i = 0; i < bq_text_arr.length; i++) {
+            container.appendChild(document.createElement('br'));
             bq = document.createElement('div');
             bq.innerHTML = bq_text_arr[i];
-            container.appendChild(document.createElement('br'));
+            bq.setAttribute("class", "injected-bq");
             container.appendChild(bq);
+            if (options[6] == true) {
+              template = document.createElement('div');
+              template.innerHTML = templateHTML;
+              container.appendChild(template);
+            }
           }
 
           // Inserts generated div back into the document
@@ -438,6 +455,17 @@ function applyFormat() {
         rationale_array[i].remove();
       }
 
+      // Add transcription templates if required
+      question_container = document.getElementsByClassName("form-group")[0];
+      questions = question_container.getElementsByClassName("panel panel-default");
+      for (let i = 0; i < questions.length; i++) {
+        question_body = questions[i].getElementsByClassName('panel-body')[0];
+        if (options[6] == true) {
+          template = document.createElement('div');
+          template.innerHTML = templateHTML;
+          question_body.appendChild(template);
+        }
+      }
     } else {
       return;
     }
@@ -463,11 +491,23 @@ function applyFormat() {
     for (let i = 0; i < btns_array.length; i++) {
       btns_array[i].remove();
     }
+    // Remove empty .panel-title elements
+    var panel_title_array = Array.prototype.slice.call(document.getElementsByClassName('panel-title'));
+    for (let i = 0; i < panel_title_array.length; i++) {
+      if (!/\S/.test(panel_title_array[i].innerHTML)) {
+        panel_title_array[i].remove();
+      }
+    }
+    // Add line break to end of page
+    var end = document.createElement('span');
+    end.innerHTML = '&nbsp'
+    document.getElementById('navcontent').appendChild(end);
     // Inject new css into head
     var style = document.createElement('style');
     style.innerHTML = `
       body {
-        font-family: Helvetica;
+        font-family: Arial, sans-serif;
+        font-size: 11pt;
       }
 
       .panel-title.panel-learner-title {
@@ -509,6 +549,14 @@ function applyFormat() {
         text-decoration: underline;
       }
 
+      .injected-bq {
+        font-style: italic;
+      }
+
+      ul {
+        margin-block-start: 0;
+        margin-block-end: 0;
+      }
     `;
     head.appendChild(style);
   })
