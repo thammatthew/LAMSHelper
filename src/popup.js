@@ -418,8 +418,6 @@ function applyFormat() {
       question_container.getElementsByTagName('br')[0].remove();
 
       // Remove MCQ associated table structure
-      var mcqcontainer;
-      var mcqcontainer_id;
       var mcqtable_array=Array.prototype.slice.call(document.getElementsByClassName('table table-hover table-condensed'));
       var mcqoptions;
       var mcqoption;
@@ -434,9 +432,7 @@ function applyFormat() {
           mcqoption.innerHTML = mcqoptions[j].innerHTML;
           mcqdiv.appendChild(mcqoption);
         }
-        mcqcontainer_id = 'question-area-' + i;
-        mcqcontainer = document.getElementById(mcqcontainer_id);
-        mcqcontainer.appendChild(mcqdiv);
+        mcqtable_array[i].parentElement.appendChild(mcqdiv);
         mcqtable_array[i].remove();
       }
 
