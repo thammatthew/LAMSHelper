@@ -29,7 +29,8 @@ applyFormatBtn.addEventListener('click', async() => {
       document.getElementById('displayGBQCheckbox').checked,
       document.getElementById('displayBQLikesCheckbox').checked,
       document.getElementById('displayBQTeamCheckbox').checked,
-      document.getElementById('appendTemplateCheckbox').checked
+      document.getElementById('appendTemplateCheckbox').checked,
+      document.getElementById('replaceImagesCheckbox').checked
     ];
   
     chrome.storage.local.set({options: options}, function() {
@@ -136,6 +137,7 @@ function applyFormat() {
     // Change page header
     document.getElementsByClassName('panel-title panel-learner-title')[0].innerHTML = pageType;
 
+    // HTML for template element
     var templateHTML = `
                 <br>
                 <span>Team Ans:</span>
@@ -145,6 +147,98 @@ function applyFormat() {
                 <ul><li></li></ul>
               `;
 
+    // Common Changes
+    // Remove head elements (especially CSS and scripts)
+    head = document.getElementsByTagName('head')[0];
+    head_array = Array.prototype.slice.call(head.childNodes);
+    for (let i = 0; i < head_array.length; i++) {
+      head_array[i].remove();
+    }
+    // Remove sidebar, if present
+    let nav = document.getElementsByTagName('nav');
+    if (!!nav == true) {
+      nav[0].remove();
+    }
+    // Remove all other scripts
+    var scripts_array = Array.prototype.slice.call(document.getElementsByTagName('script'));
+    for (let i = 0; i < scripts_array.length; i++) {
+      scripts_array[i].remove();
+    }
+    // Remove all btns (especially the 'Next Activity' and 'Finish' buttons at the bottom of the page)
+    var btns_array = Array.prototype.slice.call(document.getElementsByClassName('btn'));
+    for (let i = 0; i < btns_array.length; i++) {
+      btns_array[i].remove();
+    }
+    // Remove empty .panel-title elements
+    var panel_title_array = Array.prototype.slice.call(document.getElementsByClassName('panel-title'));
+    for (let i = 0; i < panel_title_array.length; i++) {
+      if (!/\S/.test(panel_title_array[i].innerHTML)) {
+        panel_title_array[i].remove();
+      }
+    }
+    // Add line break to end of page
+    var end = document.createElement('span');
+    end.innerHTML = '&nbsp'
+    document.getElementById('navcontent').appendChild(end);
+
+    // Inject new css into head
+    var style = document.createElement('style');
+    style.innerHTML = `
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 11pt;
+      }
+
+      .panel-title.panel-learner-title {
+        font-weight: bold;
+      }
+
+      .lead {
+        font-weight: bold;
+        text-decoration: underline;
+      }
+
+      table {
+        text-align: left;
+        width: 100%;
+        border-spacing: 0;
+        margin: 0;
+        padding: 0;
+        border: 0;
+      }
+
+      td:first-child {
+        width: 100%;
+      }
+
+      td {
+        padding: 0px;
+      }
+
+      th {
+        font-weight: normal;
+        text-decoration: underline;
+      }
+
+      .injected-bq-table > tbody > tr > td {
+        padding-bottom: 1em;
+      }
+
+      .injected-bq-header {
+        text-decoration: underline;
+      }
+
+      .injected-bq {
+        font-style: italic;
+      }
+
+      ul {
+        margin-block-start: 0;
+        margin-block-end: 0;
+      }
+    `;
+    head.appendChild(style);
+
     if (pageType == 'iRA/tRA') {
       // If "Display correct answers" is ticked
       // Define the main question container
@@ -153,6 +247,7 @@ function applyFormat() {
         // I HATE LAMS but this finds all MCQ answers which have a check displayed to their left, then applies a bold style to the parent row
         var scratchie_image_array = Array.prototype.slice.call(document.getElementsByClassName("scartchie-image"))
         var correct_ans;
+        var correct_ans_container;
         for (let i = 0; i < scratchie_image_array.length; i++) {
           if(scratchie_image_array[i].getAttribute("src").includes("scratchie-correct.png")) {
             correct_ans_container = document.createElement("span");
@@ -391,11 +486,14 @@ function applyFormat() {
         for (let i = 0; i < table_grps_array.length; i++) {
           table_grps_array[i].remove()
         }
-        var questions_array = Array.prototype.slice.call(document.getElementsByClassName('question-type'))
-        for (let i = 0; i < questions_array.length; i++) {
-          if (questions_array[i].innerHTML.includes("Answer:")) {
-            questions_array[i].nextElementSibling.remove();
-            questions_array[i].nextElementSibling.remove();
+        var question_type_array = Array.prototype.slice.call(document.getElementsByClassName('question-type'))
+        var question_children;
+        for (let i = 0; i < question_type_array.length; i++) {
+          if (question_type_array[i].innerHTML.includes("Answer:")) {
+            question_children = Array.prototype.slice.call(question_type_array[i].parentElement.children);
+            for (let j = 0; j < question_children.length; j++) {
+              question_children[j].remove();
+            }
           }
         } 
       }
@@ -405,14 +503,29 @@ function applyFormat() {
         portraits_array[i].remove();
       }
       // Insert line breaks between questions, question types, and choices
-      var question_container = document.getElementsByClassName("form-group")[0];
+      // Check needed due to Jan 2022 change in LAMS AE page structure
+      if (document.getElementById("answers") != null) {
+        var question_container = document.getElementById("answers");
+      } else {
+        var question_container = document.getElementsByClassName("form-group")[0];
+      }
       var questions = question_container.getElementsByClassName("panel panel-default");
       var question_body;
       for (let i = 0; i < questions.length; i++) {
         question_container.insertBefore(document.createElement('br'), questions[i]);
         question_body = questions[i].getElementsByClassName('panel-body')[0];
-        question_body.insertBefore(document.createElement('br'), question_body.getElementsByClassName('question-type')[0]);
-        question_body.insertBefore(document.createElement('br'), question_body.getElementsByClassName('table-responsive')[0]);
+        if (question_body.getElementsByClassName('question-type')[0] != undefined) {
+          question_body.insertBefore(document.createElement('br'), question_body.getElementsByClassName('question-type')[0]);
+        }
+        if (question_body.getElementsByClassName('table-responsive')[0] != undefined) {
+          question_body.insertBefore(document.createElement('br'), question_body.getElementsByClassName('table-responsive')[0]);
+        }
+        // Add transcription templates if required
+        if (options[6] == true) {
+          template = document.createElement('div');
+          template.innerHTML = templateHTML;
+          question_body.appendChild(template);
+        }
       }
       // Remove extraneous line break at top
       question_container.getElementsByTagName('br')[0].remove();
@@ -450,110 +563,34 @@ function applyFormat() {
         rationale_array[i].nextElementSibling.remove();
         rationale_array[i].remove();
       }
-
-      // Add transcription templates if required
-      question_container = document.getElementsByClassName("form-group")[0];
-      questions = question_container.getElementsByClassName("panel panel-default");
-      for (let i = 0; i < questions.length; i++) {
-        question_body = questions[i].getElementsByClassName('panel-body')[0];
-        if (options[6] == true) {
-          template = document.createElement('div');
-          template.innerHTML = templateHTML;
-          question_body.appendChild(template);
-        }
-      }
     } else {
       return;
     }
-    // Common Changes
-    // Remove head elements (especially CSS and scripts)
-    head = document.getElementsByTagName('head')[0];
-    head_array = Array.prototype.slice.call(head.childNodes);
-    for (let i = 0; i < head_array.length; i++) {
-      head_array[i].remove();
+
+    // HIGHLY EXPERIMENTAL: Get image data and re-render in canvas to allow direct copying to gdoc
+    /// Helper function
+    function urlContentToDataUri(url){
+      return  fetch(url)
+              .then( response => response.blob() )
+              .then( blob => new Promise( callback =>{
+                  let reader = new FileReader() ;
+                  reader.onload = function(){ callback(this.result) } ;
+                  reader.readAsDataURL(blob) ;
+              }) ) ;
     }
-    // Remove sidebar, if present
-    let nav = document.getElementsByTagName('nav');
-    if (!!nav == true) {
-      nav[0].remove();
-    }
-    // Remove all other scripts
-    var scripts_array = Array.prototype.slice.call(document.getElementsByTagName('script'));
-    for (let i = 0; i < scripts_array.length; i++) {
-      scripts_array[i].remove();
-    }
-    // Remove all btns (especially the 'Next Activity' and 'Finish' buttons at the bottom of the page)
-    var btns_array = Array.prototype.slice.call(document.getElementsByClassName('btn'));
-    for (let i = 0; i < btns_array.length; i++) {
-      btns_array[i].remove();
-    }
-    // Remove empty .panel-title elements
-    var panel_title_array = Array.prototype.slice.call(document.getElementsByClassName('panel-title'));
-    for (let i = 0; i < panel_title_array.length; i++) {
-      if (!/\S/.test(panel_title_array[i].innerHTML)) {
-        panel_title_array[i].remove();
+
+    /// Main loop
+    if (options[7] == true) {
+      var img_array = Array.prototype.slice.call(document.getElementsByClassName("img-responsive"));
+      var new_img;
+      for (let i = 0; i < img_array.length; i++) {
+        urlContentToDataUri(img_array[i].src).then( dataUri => {
+          new_img = document.createElement("img");
+          new_img.src = dataUri;
+          img_array[i].parentNode.insertBefore(new_img, img_array[i]);
+          img_array[i].remove();
+        });
       }
     }
-    // Add line break to end of page
-    var end = document.createElement('span');
-    end.innerHTML = '&nbsp'
-    document.getElementById('navcontent').appendChild(end);
-    // Inject new css into head
-    var style = document.createElement('style');
-    style.innerHTML = `
-      body {
-        font-family: Arial, sans-serif;
-        font-size: 11pt;
-      }
-
-      .panel-title.panel-learner-title {
-        font-weight: bold;
-      }
-
-      .lead {
-        font-weight: bold;
-        text-decoration: underline;
-      }
-
-      table {
-        text-align: left;
-        width: 100%;
-        border-spacing: 0;
-        margin: 0;
-        padding: 0;
-        border: 0;
-      }
-
-      td:first-child {
-        width: 100%;
-      }
-
-      td {
-        padding: 0px;
-      }
-
-      th {
-        font-weight: normal;
-        text-decoration: underline;
-      }
-
-      .injected-bq-table > tbody > tr > td {
-        padding-bottom: 1em;
-      }
-
-      .injected-bq-header {
-        text-decoration: underline;
-      }
-
-      .injected-bq {
-        font-style: italic;
-      }
-
-      ul {
-        margin-block-start: 0;
-        margin-block-end: 0;
-      }
-    `;
-    head.appendChild(style);
   })
 }
