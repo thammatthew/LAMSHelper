@@ -181,6 +181,10 @@ function applyFormat() {
     end.innerHTML = '&nbsp'
     document.getElementById('navcontent').appendChild(end);
 
+    // Remove MOSH widget
+    document.getElementById('discussion-sentiment-command').remove();
+    document.getElementById('discussion-sentiment-widget').remove();
+
     // Inject new css into head
     var style = document.createElement('style');
     style.innerHTML = `
@@ -238,6 +242,32 @@ function applyFormat() {
       }
     `;
     head.appendChild(style);
+
+    // HIGHLY EXPERIMENTAL: Get image data and re-render in canvas to allow direct copying to gdoc
+    /// Helper function
+    function urlContentToDataUri(url){
+      return  fetch(url)
+              .then( response => response.blob() )
+              .then( blob => new Promise( callback =>{
+                  let reader = new FileReader() ;
+                  reader.onload = function(){ callback(this.result) } ;
+                  reader.readAsDataURL(blob) ;
+              }) ) ;
+    }
+
+    /// Main loop
+    if (options[7] == true) {
+      var img_array = Array.prototype.slice.call(document.getElementsByClassName("img-responsive"));
+      var new_img;
+      for (let i = 0; i < img_array.length; i++) {
+        urlContentToDataUri(img_array[i].src).then( dataUri => {
+          new_img = document.createElement("img");
+          new_img.src = dataUri;
+          img_array[i].parentNode.insertBefore(new_img, img_array[i]);
+          img_array[i].remove();
+        });
+      }
+    }
 
     if (pageType == 'iRA/tRA') {
       // If "Display correct answers" is ticked
@@ -565,32 +595,6 @@ function applyFormat() {
       }
     } else {
       return;
-    }
-
-    // HIGHLY EXPERIMENTAL: Get image data and re-render in canvas to allow direct copying to gdoc
-    /// Helper function
-    function urlContentToDataUri(url){
-      return  fetch(url)
-              .then( response => response.blob() )
-              .then( blob => new Promise( callback =>{
-                  let reader = new FileReader() ;
-                  reader.onload = function(){ callback(this.result) } ;
-                  reader.readAsDataURL(blob) ;
-              }) ) ;
-    }
-
-    /// Main loop
-    if (options[7] == true) {
-      var img_array = Array.prototype.slice.call(document.getElementsByClassName("img-responsive"));
-      var new_img;
-      for (let i = 0; i < img_array.length; i++) {
-        urlContentToDataUri(img_array[i].src).then( dataUri => {
-          new_img = document.createElement("img");
-          new_img.src = dataUri;
-          img_array[i].parentNode.insertBefore(new_img, img_array[i]);
-          img_array[i].remove();
-        });
-      }
     }
   })
 }
