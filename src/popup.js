@@ -182,8 +182,18 @@ function applyFormat() {
     document.getElementById('navcontent').appendChild(end);
 
     // Remove MOSH widget
-    document.getElementById('discussion-sentiment-command').remove();
-    document.getElementById('discussion-sentiment-widget').remove();
+    if (document.getElementById('discussion-sentiment-command') != null) {
+      document.getElementById('discussion-sentiment-command').remove();
+    }
+    if (document.getElementById('discussion-sentiment-widget') != null) {
+      document.getElementById('discussion-sentiment-widget').remove();
+    }
+
+    // Remove warnings
+    warning_array = Array.prototype.slice.call(document.getElementsByClassName("alert-warning"));
+    for (let i = 0; i < warning_array.length; i++) {
+      warning_array[i].remove();
+    }
 
     // Inject new css into head
     var style = document.createElement('style');
@@ -469,42 +479,53 @@ function applyFormat() {
 
     } else if (pageType == 'AE') {
       // Remove leader
-      document.getElementsByClassName('leader-display')[0].remove();
-      // Remove all radio buttons and invisible spacer elements
-      var table_radio_array = Array.prototype.slice.call(document.getElementsByClassName('has-radio-button'));
-      for (let i = 0; i < table_radio_array.length; i++) {
-        table_radio_array[i].remove();
+      if(document.getElementsByClassName('leader-display').length != 0) {
+        document.getElementsByClassName('leader-display')[0].remove();
       }
-      var table_spacer_array = Array.prototype.slice.call(document.getElementsByClassName('complete-item-gif'));
-      for (let i = 0; i < table_spacer_array.length; i++) {
-        table_spacer_array[i].remove();
+      
+      // Remove all radio buttons and invisible spacer elements
+      if(document.getElementsByClassName('has-radio-button').length != 0) {
+        var table_radio_array = Array.prototype.slice.call(document.getElementsByClassName('has-radio-button'));
+        for (let i = 0; i < table_radio_array.length; i++) {
+          table_radio_array[i].remove();
+        }
+      }
+      if(document.getElementsByClassName('complete-item-gif').length != 0) {
+        var table_spacer_array = Array.prototype.slice.call(document.getElementsByClassName('complete-item-gif'));
+        for (let i = 0; i < table_spacer_array.length; i++) {
+          table_spacer_array[i].remove();
+        }
       }
       // Remove team answers if option is selected, otherwise reformat team answer table
-      var table_grps_array = Array.prototype.slice.call(document.getElementsByClassName('selected-by-groups'));
-      if (options[1] == true) {
-        for (let i = 0; i < table_grps_array.length; i++) {
-          table_grps_array[i].children[1].remove();
-          table_grps_array[i].children[0].remove();
-        }
-      } else {
-        for (let i = 0; i < table_grps_array.length; i++) {
-          table_grps_array[i].remove()
-        }
-        var question_type_array = Array.prototype.slice.call(document.getElementsByClassName('question-type'))
-        var question_children;
-        for (let i = 0; i < question_type_array.length; i++) {
-          if (question_type_array[i].innerHTML.includes("Answer:")) {
-            question_children = Array.prototype.slice.call(question_type_array[i].parentElement.children);
-            for (let j = 0; j < question_children.length; j++) {
-              question_children[j].remove();
-            }
+      if(document.getElementsByClassName('selected-by-groups').length != 0) {
+        var table_grps_array = Array.prototype.slice.call(document.getElementsByClassName('selected-by-groups'));
+        if (options[1] == true) {
+          for (let i = 0; i < table_grps_array.length; i++) {
+            table_grps_array[i].children[1].remove();
+            table_grps_array[i].children[0].remove();
           }
-        } 
+        } else {
+          for (let i = 0; i < table_grps_array.length; i++) {
+            table_grps_array[i].remove();
+          }
+          var question_type_array = Array.prototype.slice.call(document.getElementsByClassName('question-type'))
+          var question_children;
+          for (let i = 0; i < question_type_array.length; i++) {
+            if (question_type_array[i].innerHTML.includes("Answer:")) {
+              question_children = Array.prototype.slice.call(question_type_array[i].parentElement.children);
+              for (let j = 0; j < question_children.length; j++) {
+                question_children[j].remove();
+              }
+            }
+          } 
+        }
       }
       // Remove team portraits
-      var portraits_array = Array.prototype.slice.call(document.getElementsByClassName('portrait-sm portrait-round'));
-      for (let i = 0; i < portraits_array.length; i++) {
-        portraits_array[i].remove();
+      if(document.getElementsByClassName('portrait-sm portrait-round').length != 0) {
+        var portraits_array = Array.prototype.slice.call(document.getElementsByClassName('portrait-sm portrait-round'));
+        for (let i = 0; i < portraits_array.length; i++) {
+          portraits_array[i].remove();
+        }
       }
       // Insert line breaks between questions, question types, and choices
       // Check needed due to Jan 2022 change in LAMS AE page structure
@@ -567,6 +588,22 @@ function applyFormat() {
         rationale_array[i].nextElementSibling.remove();
         rationale_array[i].remove();
       }
+
+      // Remove confidence sliders from post-iRA pages, which are constructed like AE pages
+      if(document.getElementsByClassName('slider').length != 0) {
+        var slider_array = Array.prototype.slice.call(document.getElementsByClassName('slider'));
+        for (let i = 0; i < slider_array.length; i++) {
+          slider_array[i].remove();
+        }
+      }
+      // Get rid of any confidence labels in post-iRA pages
+      var question_type_array = Array.prototype.slice.call(document.getElementsByClassName('question-type'))
+      for (let i = 0; i < question_type_array.length; i++) {
+        if (question_type_array[i].innerHTML.includes("Confidence")) {
+          question_type_array[i].remove();
+        }
+      } 
+
     } else {
       return;
     }
