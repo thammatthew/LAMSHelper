@@ -29,8 +29,6 @@ A chrome extension to save LAMS pages.
 
 1. On a LAMS page, click the purple extension icon to open the extension popup
 
-   ![Instructions1](https://github.com/thammatthew/LAMSHelper/blob/main/readme_images/Instructions1.png)
-
 2. Press the 'SCAN PAGE' button on the bottom left of the popup to parse the page. Information retrieved from the page should now be displayed in the table on the left
 
    ![Instructions2](https://github.com/thammatthew/LAMSHelper/blob/main/readme_images/Instructions2.png)
@@ -38,8 +36,6 @@ A chrome extension to save LAMS pages.
 3. If required, change the export format by ticking/unticking the checkboxes on the right. 
 
 4. Press the 'APPLY' button on the bottom right to apply the format to the page
-
-   ![Instructions3](https://github.com/thammatthew/LAMSHelper/blob/main/readme_images/Instructions3.png)
 
 5. To save the formatted page,
 
@@ -50,8 +46,6 @@ A chrome extension to save LAMS pages.
    2. Change 'Destination' to 'Save as PDF'
 
    3. Press the 'SAVE' button on the bottom of the popup
-
-      ![Instructions4](https://github.com/thammatthew/LAMSHelper/blob/main/readme_images/Instructions4.png)
 
    4. Open the saved PDF in Microsoft Word, and save it as a .DOCX
 
