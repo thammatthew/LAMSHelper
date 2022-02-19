@@ -17,21 +17,16 @@ A chrome extension to save LAMS pages.
 
 4. Click the 'Load unpacked' button on the top left, and select the folder created in Step 1
 
-   ![](https://github.com/thammatthew/LAMSHelper/blob/main/readme_images/Installation1.png)
-
 5. Press the extensions button (puzzle piece) on the right of the address bar
 
 6. In the popup that appears, find the extension named LAMS Helper and hit the pin icon
 
-   ![Installation2](https://github.com/thammatthew/LAMSHelper/blob/main/readme_images/Installation2.png)
 
 ## Instructions
 
 1. On a LAMS page, click the purple extension icon to open the extension popup
 
 2. Press the 'SCAN PAGE' button on the bottom left of the popup to parse the page. Information retrieved from the page should now be displayed in the table on the left
-
-   ![Instructions2](https://github.com/thammatthew/LAMSHelper/blob/main/readme_images/Instructions2.png)
 
 3. If required, change the export format by ticking/unticking the checkboxes on the right. 
 
