@@ -1,6 +1,6 @@
 {
-    "name": "TBL Helper",
-    "description": "A tool to clean-up completed iRAs/tRAs and AEs on LAMS for export to a DOC/PDF/GDOC",
+    "name": "LAMS Helper",
+    "description": "A tool to clean-up LAMS pages for export to a DOC/PDF/GDOC",
     "version": "1.8",
     "manifest_version": 3,
     "permissions": ["storage", "activeTab", "scripting"],

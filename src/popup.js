@@ -319,8 +319,8 @@ function applyFormat() {
       var bq_text_arr = [];
       var bq_like_count_arr = [];
 
-      var tbl;
-      var tblBody;
+      var lams;
+      var lamsBody;
       var row;
       var grpCell;
       var textCell;
@@ -394,8 +394,8 @@ function applyFormat() {
 
         } else {
           // Creates a fresh table for the block's BQs from array data
-          tbl = document.createElement('table');
-          tblBody = document.createElement('tbody');
+          lams = document.createElement('table');
+          lamsBody = document.createElement('tbody');
           // Create header row for table
           row = document.createElement("tr");
           textCell = document.createElement("th");
@@ -412,7 +412,7 @@ function applyFormat() {
             grpCell.innerHTML = "Team";
             row.appendChild(grpCell);
           } else {}
-          tblBody.appendChild(row);
+          lamsBody.appendChild(row);
           // Create rows from array
           for (let i = 0; i < bq_text_arr.length; i++) {
             row = document.createElement("tr");
@@ -429,19 +429,19 @@ function applyFormat() {
               grpCell.innerHTML = bq_grp_name_arr[i];
               row.appendChild(grpCell);
             } else {}
-            tblBody.appendChild(row);
+            lamsBody.appendChild(row);
           }
-          tbl.appendChild(tblBody);
-          tbl.setAttribute("class", "injected-bq-table");
+          lams.appendChild(lamsBody);
+          lams.setAttribute("class", "injected-bq-table");
 
           // Inserts generated table back into the document
           if (q_no == "generalBQ" & options[3] == true) {
             // Insert gbqs if option is selected
-            questionContainer.appendChild(tbl);
+            questionContainer.appendChild(lams);
           } else if (q_no != "generalBQ" & options[2] == true) {
             // Insert sbqs if option is selected
             // Imma pick a fight with the lams web design team
-            questionContainer.insertBefore(tbl, document.getElementById(q_no).nextElementSibling.nextElementSibling.nextElementSibling);
+            questionContainer.insertBefore(lams, document.getElementById(q_no).nextElementSibling.nextElementSibling.nextElementSibling);
           } else {
             // Does nothing if options are deselected
           }
